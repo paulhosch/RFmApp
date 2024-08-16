@@ -1,0 +1,9 @@
+[theme]
+base="dark"  # Use a light base for the theme. Options are "light" or "dark".
+primaryColor="#01549f"  # Primary color for interactive elements like buttons and sliders.
+secondaryBackgroundColor="#c9d2d3"  # Secondary background color for elements like sidebar, footer, etc.
+backgroundColor="#efefee"  # Background color of the main content area.
+textColor="#000000"  # Color of the text.
+font="sans serif"  # Font used in the app. Options are "sans serif", "serif", "monospace".
+
+
