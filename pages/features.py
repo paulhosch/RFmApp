@@ -26,17 +26,16 @@ def features():
     observation_group_labels = [group['label'] for group in observation_groups]
     observation_groups_hash = hash_observation_groups()
 
-
-    col1, col2, col3, col4= st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
     #### Plot Maps ####
     with col1.form('spacial_distribution'):
         st.write("##### Spacial Distribution of Features")
 
         features_to_map = st.multiselect('Select Input Features',
-                                            st.session_state.all_features,
-                                            default=st.session_state.selected_features,
-                                            label_visibility='collapsed')
+                                         st.session_state.all_features,
+                                         default=st.session_state.selected_features,
+                                         label_visibility='collapsed')
 
         group_to_map = option_menu(
             None, observation_group_labels,
@@ -48,19 +47,19 @@ def features():
         map_features = st.form_submit_button(label='Plot Maps', use_container_width=True, type='primary')
 
     if map_features:
-            # Get feature min_max
-            progress_bar = st.progress(0)
-            for i, group in enumerate(observation_groups):
-                progress = int((i + 1) / len(observation_groups) * 100)
-                map_group_hash = hash_single_observation_group(group)
-                progress_bar.progress(progress, text=f"Calculating extrema for {group['label']} on {group['date']} ...")
+        # Get feature min_max
+        progress_bar = st.progress(0)
+        for i, group in enumerate(observation_groups):
+            progress = int((i + 1) / len(observation_groups) * 100)
+            map_group_hash = hash_single_observation_group(group)
+            progress_bar.progress(progress, text=f"Calculating extrema for {group['label']} on {group['date']} ...")
 
-                # Add min/max values
-                add_feature_min_max(i, group, features_to_map, map_group_hash)
+            # Add min/max values
+            add_feature_min_max(i, group, features_to_map, map_group_hash)
 
-            progress_bar.empty()
+        progress_bar.empty()
 
-            plot_feature_maps(group_to_map, features_to_map)
+        plot_feature_maps(group_to_map, features_to_map)
 
     if 'feature_maps' in st.session_state:
         with stylable_container(key='map_container', css_styles=border_container):
@@ -77,9 +76,9 @@ def features():
     with col2.form('value_distribution'):
         st.write("##### Value Distribution of Features")
         features_to_plot = st.multiselect('Select Input Features',
-                                         st.session_state.all_features,
-                                         default=st.session_state.selected_features,
-                                         label_visibility='collapsed')
+                                          st.session_state.all_features,
+                                          default=st.session_state.selected_features,
+                                          label_visibility='collapsed')
         chart = option_menu(
             None, ['Ridgeline', 'Histogram', 'Boxplot'], icons=['graph-down', 'bar-chart', 'bar-chart-steps'],
             menu_icon="cast", default_index=0, orientation="horizontal", styles=opt_menu_style
@@ -105,9 +104,9 @@ def features():
     with col3.form('correlation'):
         st.write("##### Global Correlation Analysis")
         features_to_analyse = st.multiselect('Select Input Features',
-                                          st.session_state.all_features,
-                                          default=st.session_state.selected_features,
-                                          label_visibility='collapsed')
+                                             st.session_state.all_features,
+                                             default=st.session_state.selected_features,
+                                             label_visibility='collapsed')
 
         reducer = option_menu(
             None, ['Pearson', 'Spearman', 'Difference'], icons=['graph-up', 'list-ol', 'info'],
@@ -129,8 +128,8 @@ def features():
 
             with st.spinner('Computing Correlation ...'):
                 correlation = compute_pairwise_correlations_for_groups(observation_groups,
-                                                                                   features_to_analyse,
-                                                                                   ee_reducer)
+                                                                       features_to_analyse,
+                                                                       ee_reducer)
 
             with st.spinner('Plotting Correlation ...'):
                 st.session_state.correlation_fig = plot_3d_correlation_scatter_with_heatmap(
@@ -144,18 +143,17 @@ def features():
 
             st.plotly_chart(st.session_state.correlation_fig)
 
-
     #### Importance  ####
     with col4.form('importance_form'):
         st.write("##### Feature Importance")
         features = st.multiselect('Select Input Features',
-                                         st.session_state.all_features,
-                                         default=st.session_state.selected_features,
-                                         label_visibility='collapsed')
+                                  st.session_state.all_features,
+                                  default=st.session_state.selected_features,
+                                  label_visibility='collapsed')
         all_importance_proxies = ['Impurity Reduction', 'Permutation Accuracy', 'Shapley']
         importance_proxies = st.multiselect('Select Importance Proxy',
-                                  all_importance_proxies,
-                                  default= all_importance_proxies)
+                                            all_importance_proxies,
+                                            default=all_importance_proxies)
 
         use_low_card_col = st.toggle("Low cardinality random feature", value=True)
         use_high_card_col = st.toggle("High cardinality random feature", value=True)
@@ -168,13 +166,10 @@ def features():
 
         impurity_importances, list_shap_values, list_test_sets, feature_names, permutation_importances = (
             get_feature_importance(folds, importance_proxies,
-                                                                              use_high_card_col, use_low_card_col,
-                                                                              all_features))
+                                   use_high_card_col, use_low_card_col,
+                                   all_features))
+        st.write(impurity_importances)
 
         plot_impurity_importances(impurity_importances)
         plot_permutation_importances(permutation_importances)
         plot_shap_values(folds, list_shap_values, feature_names)
-
-
-
-

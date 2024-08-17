@@ -32,3 +32,5 @@ elif page == "Case Study":
     pages.case_study()
 elif page == "Features":
     pages.features()
+elif page == "Sampling":
+    pages.sampling()

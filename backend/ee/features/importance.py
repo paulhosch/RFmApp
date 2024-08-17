@@ -39,6 +39,11 @@ def get_feature_importance(folds, importance_proxies, use_high_card_col, use_low
         if use_low_card_col:
             feature_names.append('LOW_CARD_RANDOM')
 
+        # Ensure that the feature names match the columns in X_test_random
+        if len(feature_names) != X_test_random.shape[1]:
+            raise ValueError(f"Length mismatch: Expected {X_test_random.shape[1]} feature names, "
+                             f"but got {len(feature_names)}.")
+
         # Train model
         model = RandomForestClassifier(n_estimators=100, random_state=42)
         model.fit(X_train_random, y_train)

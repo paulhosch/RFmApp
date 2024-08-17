@@ -22,6 +22,11 @@ def plot_shap_values(folds, list_shap_values, feature_names):
     # Concatenate X_test from all folds
     X_test_all = pd.concat([pd.DataFrame(fold['X_test']) for fold in folds], axis=0)
 
+    # Check if the number of columns in X_test_all matches the length of feature_names
+    if X_test_all.shape[1] != len(feature_names):
+        raise ValueError(f"Length mismatch: X_test_all has {X_test_all.shape[1]} columns, "
+                         f"but feature_names has {len(feature_names)} elements.")
+
     # Assign feature names as column names
     X_test_all.columns = feature_names
 
