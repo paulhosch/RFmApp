@@ -6,7 +6,7 @@ def cmap_to_hex(cmap_name, n_colors=256):
     return [mcolors.rgb2hex(cmap(i)) for i in range(cmap.N)]
 
 
-features = {
+feature_vis_params = {
     'VV': {'min': -25, 'max': 5, 'palette':  ['000000', 'FFFFFF']},
     'VH': {'min': -25, 'max': 0, 'palette':  ['000000', 'FFFFFF']},
     'angle': {'palette': cmap_to_hex('viridis')},

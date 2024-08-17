@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from backend.obs_group import *
 from backend.case_study import load_example, handle_file_upload, NUM_SETS
 from backend.ee import convert_observation_groups_to_ee, add_feature_image_to_group
-from frontend.plot import plot_all_aois
+from frontend.map import plot_all_aois
 
 def case_study():
     initialize_observation_groups(NUM_SETS)
@@ -111,15 +111,14 @@ def case_study():
             convert_observation_groups_to_ee()
             return
 
-        with col1:
-            cache_init(observation_groups_hash)
+        cache_init(observation_groups_hash)
 
-            progress_bar = st.progress(0)
-            for i, group in enumerate(observation_groups):
-                progress = int((i + 1) / len(observation_groups)*100)
-                progress_bar.progress(progress, text=f"Processing {group['label']} ({group['date']})")
+        progress_bar = st.progress(0)
+        for i, group in enumerate(observation_groups):
+            progress = int((i + 1) / len(observation_groups)*100)
+            progress_bar.progress(progress, text=f"Processing {group['label']} ({group['date']})")
 
-                group_hash = hash_single_observation_group(group)
-                add_feature_image_to_group(i, group, group_hash)
+            group_hash = hash_single_observation_group(group)
+            add_feature_image_to_group(i, group, group_hash)
 
-            progress_bar.empty()
+        progress_bar.empty()

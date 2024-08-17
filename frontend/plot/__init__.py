@@ -1,1 +1,0 @@
-from .maps import plot_all_aois

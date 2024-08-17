@@ -25,4 +25,5 @@ def load_example():
         date = datetime.strptime("_".join(date_str), "%Y_%m_%d").date()
 
         update_observation_group(i, aoi=aoi, ground_truth=ground_truth, label=label, date=date)
-        st.success("Example data initialized successfully!")
+
+    st.success("Example data initialized successfully!")
