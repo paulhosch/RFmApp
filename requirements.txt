@@ -1,1 +1,7 @@
-streamlit~=1.35.0
+streamlit==1.35.0
+streamlit_navigation_bar==3.3.0
+
+ee~=0.2
+earthengine-api~=0.1.409
+geopandas~=0.14.4
+matplotlib~=3.9.1
