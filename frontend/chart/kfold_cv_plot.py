@@ -4,15 +4,14 @@ import matplotlib.colors as plt_colors
 import numpy as np
 import pandas as pd
 
-
 @st.cache_resource()
 def plot_kfold_splits(X, y, _cv, k):
     """
     Plot K-Fold splits along with class labels using specified colors.
 
     Parameters:
-    X (array-like): Feature data.
-    y (array-like): Target labels.
+    X (pd.DataFrame): Feature data DataFrame.
+    y (pd.DataFrame): Target labels DataFrame with a 'label' column.
     _cv: Cross-validation object.
     k (int): Number of splits.
 
@@ -30,7 +29,7 @@ def plot_kfold_splits(X, y, _cv, k):
     split_info = []
 
     # Generate the training/testing visualizations for each CV split
-    for ii, (tr, tt) in enumerate(_cv.split(X=X, y=y)):
+    for ii, (tr, tt) in enumerate(_cv.split(X=X, y=y['label'])):
         # Fill in indices with the training/test groups
         indices = np.array([np.nan] * len(X))
         indices[tt] = 1
@@ -42,7 +41,7 @@ def plot_kfold_splits(X, y, _cv, k):
                 'Sample': idx,
                 'Fold': ii,
                 'Split': 'Validation' if indices[idx] == 1 else 'Training' if indices[idx] == 0 else 'Unassigned',
-                'Class': y[idx]
+                'Class': y.iloc[idx]['label']  # Accessing the label column
             })
 
         # Visualize the results
@@ -57,12 +56,13 @@ def plot_kfold_splits(X, y, _cv, k):
             vmax=1.2,
             label='Training' if ii == 0 else 'Validation'
         )
+
     # Convert the split information to a DataFrame
     df = pd.DataFrame(split_info)
 
     # Plot the data classes at the end
     scatter = ax.scatter(
-        range(len(X)), [ii + 1.5] * len(X), c=y, marker="_", lw=10, cmap=class_cmap
+        range(len(X)), [ii + 1.5] * len(X), c=y['label'], marker="_", lw=10, cmap=class_cmap
     )
 
     # Adding legend for the classes
@@ -83,6 +83,6 @@ def plot_kfold_splits(X, y, _cv, k):
     ax.set_facecolor('none')
 
     # Adding legend for the splits
-    ax.legend(['Validation', 'Training'], loc='lower right',frameon=False, bbox_to_anchor=(0.5, -0.3), facecolor='none')
+    ax.legend(['Validation', 'Training'], loc='lower right', frameon=False, bbox_to_anchor=(0.5, -0.3), facecolor='none')
 
     return df, fig

@@ -1,12 +1,12 @@
-import numpy as np
 
+import pandas as pd
 
 def get_logo_folds(observation_groups):
     """
     Generate Leave-One-Group-Out (LOGO) folds.
 
     Parameters:
-    observation_groups (list): List of dictionaries containing 'X' and 'y' keys for each group.
+    observation_groups (list): List of dictionaries containing 'X' and 'y' DataFrames for each group.
 
     Returns:
     folds (list): List of dictionaries with training and testing data and group info.
@@ -17,18 +17,18 @@ def get_logo_folds(observation_groups):
 
     for i in range(len(observation_groups)):
         X_test, y_test = X_list[i], y_list[i]
-        X_train = np.vstack([X for j, X in enumerate(X_list) if j != i])
-        y_train = np.concatenate([y for j, y in enumerate(y_list) if j != i])
+        X_train = pd.concat([X for j, X in enumerate(X_list) if j != i], axis=0)
+        y_train = pd.concat([y for j, y in enumerate(y_list) if j != i], axis=0)
 
         # Sort X_train and y_train based on y_train
-        sorted_indices = np.argsort(y_train)
-        X_train_sorted = X_train[sorted_indices]
-        y_train_sorted = y_train[sorted_indices]
+        sorted_indices = y_train.sort_values(by='label').index
+        X_train_sorted = X_train.loc[sorted_indices]
+        y_train_sorted = y_train.loc[sorted_indices]
 
         # Sort X_test and y_test based on y_test
-        sorted_indices_test = np.argsort(y_test)
-        X_test_sorted = X_test[sorted_indices_test]
-        y_test_sorted = y_test[sorted_indices_test]
+        sorted_indices_test = y_test.sort_values(by='label').index
+        X_test_sorted = X_test.loc[sorted_indices_test]
+        y_test_sorted = y_test.loc[sorted_indices_test]
 
         # Store the fold information
         fold_info = {

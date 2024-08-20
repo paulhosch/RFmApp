@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.inspection import permutation_importance
 import matplotlib.pyplot as plt
 import shap
-
+import streamlit as st
 
 def add_random_col(X, use_high_card_col, use_low_card_col):
     X_random = X.copy()
@@ -17,11 +17,26 @@ def add_random_col(X, use_high_card_col, use_low_card_col):
 
     return X_random
 
+
+def check_column_names(X_test_random, feature_names):
+    # Before assigning feature names
+    print("Shape of X_test_random before assigning feature names:", X_test_random.shape)
+    print("First few rows of X_test_random (as ndarray):\n", X_test_random[:5])
+
+    # Convert to DataFrame and assign feature names
+    X_test_df = pd.DataFrame(X_test_random, columns=feature_names)
+
+    # After assigning feature names
+    print("Column names after assigning feature names:", X_test_df.columns.tolist())
+    print("First few rows of X_test_df:\n", X_test_df.head())
+
+    return X_test_df
+
+
 def get_feature_importance(folds, importance_proxies, use_high_card_col, use_low_card_col, all_features):
     impurity_importances = []
-    shap_values_all = []
-    list_shap_values = list()
-    list_test_sets = list()
+    list_shap_values = []
+    list_X_tests = []
     permutation_importances = []
 
     for fold_idx, fold in enumerate(folds):
@@ -39,10 +54,8 @@ def get_feature_importance(folds, importance_proxies, use_high_card_col, use_low
         if use_low_card_col:
             feature_names.append('LOW_CARD_RANDOM')
 
-        # Ensure that the feature names match the columns in X_test_random
-        if len(feature_names) != X_test_random.shape[1]:
-            raise ValueError(f"Length mismatch: Expected {X_test_random.shape[1]} feature names, "
-                             f"but got {len(feature_names)}.")
+        # Check column names before and after assignment
+        X_test_df = check_column_names(X_test_random, feature_names)
 
         # Train model
         model = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -53,17 +66,36 @@ def get_feature_importance(folds, importance_proxies, use_high_card_col, use_low
                 impurity_importance = pd.Series(model.feature_importances_, index=feature_names)
                 impurity_importances.append(impurity_importance)
 
-            elif importance_proxy == 'Shapley':
-                explainer = shap.TreeExplainer(model)
-                shap_values = explainer.shap_values(X_train_random)
-                shap_values_all.append(shap_values)
-
-                list_shap_values.append(shap_values)
-                list_test_sets.append(fold_idx)
-
             elif importance_proxy == 'Permutation Accuracy':
                 result = permutation_importance(model, X_test_random, y_test, n_repeats=10, random_state=42)
                 perm_importance = pd.Series(result.importances_mean, index=feature_names)
                 permutation_importances.append(perm_importance)
 
-    return impurity_importances, list_shap_values, list_test_sets, feature_names, permutation_importances
+            elif importance_proxy == 'Shapley':
+                if fold_idx == 0:  # Only process the first fold
+                    explainer = shap.TreeExplainer(model)
+                    shap_values = explainer.shap_values(X_test_df)
+
+    for importance_proxy in importance_proxies:
+        if importance_proxy == 'Impurity Reduction':
+            df = pd.DataFrame(impurity_importances)
+            df.boxplot(rot=90)
+            plt.title("Impurity Reduction Feature Importances")
+            st.pyplot(plt.gcf())
+            plt.clf()
+
+        elif importance_proxy == 'Shapley':
+            shap.summary_plot(shap_values, X_test_df)
+
+            # Use st.pyplot to display the plot in Streamlit
+            st.pyplot(plt.gcf())
+            plt.clf()  # Clear the figure after displaying to avoid overlapping plots
+
+        elif importance_proxy == 'Permutation Accuracy':
+            df = pd.DataFrame(permutation_importances)
+            df.boxplot(rot=90)
+            plt.title("Permutation Feature Importances")
+            st.pyplot(plt.gcf())
+            plt.clf()
+
+    return impurity_importances, list_shap_values, feature_names, permutation_importances

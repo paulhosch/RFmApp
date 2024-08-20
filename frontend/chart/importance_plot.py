@@ -20,7 +20,7 @@ def plot_permutation_importances(permutation_importances):
 
 def plot_shap_values(folds, list_shap_values, feature_names):
     # Concatenate X_test from all folds
-    X_test_all = pd.concat([pd.DataFrame(fold['X_test']) for fold in folds], axis=0)
+    X_test_all = pd.concat([pd.DataFrame(fold['X_test_random']) for fold in folds], axis=0)
 
     # Check if the number of columns in X_test_all matches the length of feature_names
     if X_test_all.shape[1] != len(feature_names):

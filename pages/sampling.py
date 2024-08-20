@@ -58,6 +58,7 @@ def sampling():
 
                     update_observation_group(i, sample_coordinates=sample_coordinates, X=X, y=y)
 
+
             progress_bar.empty()
 
             with st.spinner(text="Creating LOGO Folds ..."):
@@ -106,9 +107,13 @@ def sampling():
                     st.write(f"**{test_group['label']}**")
                     if 'sample_coordinates' in test_group:
                         sample = test_group['sample_coordinates']
+
+                        # Merge sample coordinates with feature data
+                        sample_with_features = sample.join(test_group['X'].reset_index(drop=True))
+
                         flooded_count = sample[sample['class'] == 1].shape[0]
                         non_flooded_count = sample[sample['class'] == 0].shape[0]
-                        with chart_container(sample):
+                        with chart_container(sample_with_features):
                             fig = plot_sample_coordinates(sample, test_group['aoi'])
                             st.pyplot(fig)
                         st.write(
@@ -128,9 +133,12 @@ def sampling():
                         st.write(f"**{train_group['label']}**")
                         if 'sample_coordinates' in train_group:
                             sample = train_group['sample_coordinates']
+                            # Merge sample coordinates with feature data
+                            sample_with_features = sample.join(test_group['X'].reset_index(drop=True))
+
                             flooded_count = sample[sample['class'] == 1].shape[0]
                             non_flooded_count = sample[sample['class'] == 0].shape[0]
-                            with chart_container(sample):
+                            with chart_container(sample_with_features):
                                 fig = plot_sample_coordinates(sample, train_group['aoi'])
                                 st.pyplot(fig)
                             st.write(
@@ -143,7 +151,7 @@ def sampling():
             with col3:
                 with stylable_container(key=f"train-container-{selected_fold_idx}-kfold",
                                         css_styles=training_container):
-                    st.write('##### K-Folds of the Testing Split ')
+                    st.write('##### K-Folds of the Training Split ')
 
                     skf = st.session_state.skf
 

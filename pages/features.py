@@ -168,8 +168,7 @@ def features():
             get_feature_importance(folds, importance_proxies,
                                    use_high_card_col, use_low_card_col,
                                    all_features))
-        st.write(impurity_importances)
 
-        plot_impurity_importances(impurity_importances)
+'''        plot_impurity_importances(impurity_importances)
         plot_permutation_importances(permutation_importances)
-        plot_shap_values(folds, list_shap_values, feature_names)
+        plot_shap_values(folds, list_shap_values, feature_names)'''

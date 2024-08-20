@@ -1,7 +1,7 @@
 import numpy as np
 import streamlit as st
 import ee
-
+import pandas as pd
 
 def convert_sampled_points_to_fc(sampled_points_df):
     features = sampled_points_df.apply(lambda row: ee.Feature(
@@ -39,7 +39,8 @@ def get_group_X_y(_group, group_hash, sampled_points_df):
             features.append(feature_vector)
             labels.append(properties['class'])
 
-    X = np.array(features)  # input variable values
-    y = np.array(labels)  # class label values
+        # Convert features and labels to DataFrames with appropriate column names
+        X = pd.DataFrame(features, columns=all_features)  # DataFrame with feature names as column names
+        y = pd.DataFrame(labels, columns=['label'])  # DataFrame with 'label' as the column name
 
     return X, y
