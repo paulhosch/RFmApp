@@ -17,19 +17,21 @@ def sampling():
 
     observation_groups = get_all_observation_groups()
 
-    col1, col2 = st.columns([1, 6])
+    col1, col2 = st.columns([1, 5])
 
     with col1:
-        st.write("### Sampling Design")
         with st.form("sampling_design"):
+            st.write("#### Sampling Design")
             mode_input_dummy = st.selectbox("**Sampling Mode**", ['Grouped Stratified Random Sampling'])
             total_size = st.number_input("**Samples per Group**", min_value=100, value=500,
                                          step=10)
             allocation = st.selectbox("**Class Allocation**", ["Proportional", "Equalized"])
+            st.write("#### Validation Design")
+
             outer_input_dummy = st.selectbox("**Outer Validation Loop**", ['LOGO-CV'])
-            cols = st.columns([1, 1])
-            with cols[0]:  inner_input_dummy = st.selectbox("**Inner Validation Loop**", ['SKF-CV'])
-            with cols[1]: k_folds = st.number_input("**K-Folds**", min_value=2, value=5, step=1)
+
+            inner_input_dummy = st.selectbox("**Inner Validation Loop**", ['SKF-CV'])
+            k_folds = st.number_input("**K-Folds**", min_value=2, value=5, step=1)
             submitted = st.form_submit_button("Create Samples", use_container_width=True, type="primary")
 
         if submitted:

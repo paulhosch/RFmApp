@@ -3,4 +3,4 @@ from .case_study import case_study
 from .features import features
 from .sampling import sampling
 
-NAMES = ["Home", "Case Study", "Features", "Sampling"]
+NAMES = ["Home", "Case Study", "Sampling", "Features"]
