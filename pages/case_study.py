@@ -99,19 +99,8 @@ def case_study():
 
 
     if are_observation_groups_valid():
-        observation_groups_hash = hash_observation_groups()
 
-        # Initialize EE and convert group data
-        @st.cache_data()
-        def cache_init(hash):
-            with st.spinner('Initializing GEE ...'):
-                ee.Initialize()
-
-            # Convert the data of all observation groups to EE Objects and add them to the session state dict
-            convert_observation_groups_to_ee()
-            return
-
-        cache_init(observation_groups_hash)
+        convert_observation_groups_to_ee()
 
         progress_bar = st.progress(0)
         for i, group in enumerate(observation_groups):
