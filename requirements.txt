@@ -31,7 +31,6 @@ diskcache==5.6.3
 docopt==0.6.2
 dtreeviz==2.2.2
 earthengine-api==0.1.417
-ee==0.2
 eerepr==0.0.4
 entrypoints==0.4
 eomaps==8.2.1
