@@ -212,3 +212,4 @@ widgetsnbextension==4.0.11
 xyzservices==2024.6.0
 yarg==0.1.9
 zipp==3.19.2
+setuptools
