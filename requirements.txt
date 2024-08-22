@@ -69,6 +69,7 @@ holoviews==1.19.1
 htbuilder==0.6.2
 httplib2==0.22.0
 hvplot==0.10.0
+hydralit-components==1.0.10
 idna==3.7
 imageio==2.34.2
 importlib_metadata==8.0.0
@@ -164,7 +165,6 @@ scikit-learn==1.5.1
 scipy==1.13.1
 scooby==0.10.0
 seaborn==0.13.2
-setuptools
 shap==0.46.0
 shapely==2.0.4
 six==1.16.0

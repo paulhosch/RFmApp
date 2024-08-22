@@ -3,3 +3,4 @@ from .features.feature_min_max import add_feature_min_max
 from .features.correlation import compute_pairwise_correlations_for_groups, create_average_absolute_correlation_matrix
 from .features.importance import get_importances
 from .utils import convert_observation_groups_to_ee
+from .tools.initialize_ee import initialize_rfmapp

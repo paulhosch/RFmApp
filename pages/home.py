@@ -1,7 +1,6 @@
 import streamlit as st
+from backend.ee import initialize_rfmapp
 
 
 def home():
-    st.title("Welcome to RFmApp")
-
-
+    initialize_rfmapp()
