@@ -57,7 +57,7 @@ def get_importances(folds, importance_proxies, use_high_card_col, use_low_card_c
                 impurity_importances.append(impurity_importance)
 
             elif importance_proxy == 'Permutation Accuracy':
-                result = permutation_importance(model, X_test_random, y_test['label'], n_repeats=10, random_state=42)
+                result = permutation_importance(model, X_test_random, y_test['label'], n_repeats=50, random_state=42)
                 perm_importance = pd.Series(result.importances_mean, index=feature_names)
                 permutation_importances.append(perm_importance)
 
