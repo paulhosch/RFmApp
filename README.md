@@ -39,9 +39,9 @@
   - **Importance Analysis**: Determine the relative importance of each feature in the model.
 - **More to Come**: Future updates will bring additional features and improvements.
 
-## Access
+## Web Access
 
-The RFmApp has been deployed using Streamlit Cloud and is accessible at the following URL:
+The RFmApp has been deployed using Streamlit Cloud and is accessible in all standard Web Browsers at the following URL:
 
 [https://rfmapp.streamlit.app/](https://rfmapp.streamlit.app/)
 
