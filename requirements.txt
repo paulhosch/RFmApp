@@ -12,7 +12,6 @@ bqplot==0.12.43
 branca==0.7.2
 bs4==0.0.1
 cachetools==5.3.3
-cartoee==0.0.5
 Cartopy==0.23.0
 certifi==2024.6.2
 charset-normalizer==3.3.2
@@ -25,13 +24,14 @@ colour==0.1.5
 comm==0.2.2
 contourpy==1.2.1
 cycler==0.12.1
+Cython==3.0.11
 decorator==5.1.1
 defusedxml==0.7.1
 descartes==1.1.0
 diskcache==5.6.3
 docopt==0.6.2
 dtreeviz==2.2.2
-earthengine-api==0.1.409
+earthengine-api==0.1.417
 ee==0.2
 eerepr==0.0.4
 entrypoints==0.4
@@ -42,6 +42,7 @@ Faker==26.0.0
 fastjsonschema==2.20.0
 favicon==0.7.0
 fiona==1.9.6
+Flask==3.0.3
 folium==0.16.0
 fonttools==4.53.0
 future==1.0.0
@@ -49,6 +50,7 @@ geemap==0.32.1
 geocoder==1.38.1
 geojson==3.1.0
 geopandas==0.14.4
+geos==0.2.3
 geosample==0.3.0
 geoviews==1.12.0
 gitdb==4.0.11
@@ -79,6 +81,7 @@ ipyleaflet==0.18.2
 ipython==8.12.3
 ipytree==0.2.2
 ipywidgets==8.1.3
+itsdangerous==2.2.0
 jedi==0.19.1
 Jinja2==3.1.4
 joblib==1.4.2
@@ -205,6 +208,7 @@ urllib3==2.2.2
 validators==0.30.0
 wcwidth==0.2.13
 webencodings==0.5.1
+Werkzeug==3.0.4
 widgetsnbextension==4.0.11
 xyzservices==2024.6.0
 yarg==0.1.9
