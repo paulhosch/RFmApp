@@ -1,5 +1,6 @@
 ![title_2](https://github.com/user-attachments/assets/2f22c78e-60b9-4e46-9864-06e53de1bbdd)
 
+![Development Status](https://img.shields.io/badge/status-under--development-yellow.svg)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Cloud%20Deployment-red)](https://rfmapp.streamlit.app/)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Google Earth Engine](https://img.shields.io/badge/Google%20Earth%20Engine-Enabled-green.svg)
@@ -8,6 +9,10 @@
 ![Issues](https://img.shields.io/github/issues/paulhosch/RFmApp.svg)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 ![Last Commit](https://img.shields.io/github/last-commit/paulhosch/RFmApp.svg)
+
+## 🚧 Under Development 🚧
+
+**Please note**: RFmApp is currently under active development. Some features may not be fully implemented, and the application is subject to changes. 
 
 ## Table of Contents
 
