@@ -7,7 +7,6 @@ beautifulsoup4==4.12.3
 bleach==6.1.0
 blessings==1.7
 blinker==1.8.2
-bokeh==2.4.3
 bqplot==0.12.43
 branca==0.7.2
 bs4==0.0.1
