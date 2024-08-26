@@ -2,3 +2,4 @@ from .feature_histogram import get_histogram_data, create_ridgeline_plot
 from .correlation_scatter_3d import plot_3d_correlation_scatter_with_heatmap
 from .importance_plot import plot_importances
 from .kfold_cv_plot import plot_kfold_splits
+from .tuning import display_study_results, plot_confusion_matrix

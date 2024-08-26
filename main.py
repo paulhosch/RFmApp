@@ -17,9 +17,11 @@ initialize_session_state()
 project_root = Path(__file__).parent
 logo_path = project_root / "static" / "images" / "logo.svg"
 
+NAMES = ["Home", "Case Study", "Sampling", "Features", "Tuning"]
+
 # Create the navigation bar
 page = st_navbar(
-    pages.NAMES,
+    NAMES,
     logo_path=str(logo_path),  # Convert the Path object to string as required by st_navbar
     styles=nav_style,
     options=nav_options,
@@ -34,3 +36,5 @@ elif page == "Features":
     pages.features()
 elif page == "Sampling":
     pages.sampling()
+elif page == "Tuning":
+    pages.tuning()
