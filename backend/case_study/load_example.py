@@ -26,4 +26,4 @@ def load_example():
 
         update_observation_group(i, aoi=aoi, ground_truth=ground_truth, label=label, date=date)
 
-    st.success("Example data initialized successfully!")
+    st.toast("Example data initialized successfully!")
