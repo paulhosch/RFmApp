@@ -159,9 +159,8 @@ def case_study():
         if valid_groups:
             try:
                 with hc.HyLoader('', hc.Loaders.pretty_loaders, index=3):
-
                     figures = plot_all_aois(valid_groups)
-                    cols = st.columns(2)
+                cols = st.columns(2)
 
                 # Display AOI figures
                 for i in range(0, len(figures) - 1):

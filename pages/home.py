@@ -7,6 +7,7 @@ def home():
     st.write('Web Application for Flood Mapping using Random Forest and Synthetic Aperture Radar')
     initialize_rfmapp()
 
+
     # Add a button to the Streamlit app
     col1, col2 = st.columns([1,5])
     if col1.button("Clear Cache and Restart App"):

@@ -19,6 +19,9 @@ def features():
     st.write("### Feature Engineering")
     st.empty()  # Clear the UI
 
+    if 'logo_folds' not in st.session_state:
+        st.error("Sample training and validation Data first.", icon="⚠")
+
     if not are_observation_groups_valid_and_covered():
         st.error("Please specify the observation groups first.", icon="⚠")
 

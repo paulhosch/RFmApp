@@ -60,16 +60,17 @@ def display_study_results(study):
     # Contour Plot with SelectBox for X and Y axes
     @st.experimental_fragment
     def contour_plot_fragment():
+        col1, col2 = st.columns([1,3])
         param_names = list(best_params.keys())
-        x_param = st.selectbox("Select X-axis parameter for Contour Plot", param_names)
-        y_param = st.selectbox("Select Y-axis parameter for Contour Plot", param_names, index=2)
+        x_param = col1.selectbox("Select X-axis parameter for Contour Plot", param_names)
+        y_param = col1.selectbox("Select Y-axis parameter for Contour Plot", param_names, index=2)
         if x_param != y_param:
             fig = vis.plot_contour(study, params=[x_param, y_param])
-            st.plotly_chart(customize_plotly_fig(fig), use_container_width=True)
-            st.write(
+            col2.plotly_chart(customize_plotly_fig(fig), use_container_width=True)
+            col2.write(
                 f"The contour plot visualizes the relationship between {x_param} and {y_param}, showing how these two parameters interact and affect the objective value.")
         else:
-            st.write("Please select different parameters for X and Y axes.")
+            col2.write("Please select different parameters for X and Y axes.")
 
     contour_plot_fragment()
 

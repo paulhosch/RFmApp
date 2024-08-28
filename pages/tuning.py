@@ -13,6 +13,9 @@ from frontend.chart import display_study_results, plot_confusion_matrix
 
 
 def tuning():
+    if 'logo_folds' not in st.session_state:
+        st.error("Sample training and validation Data first.", icon="⚠")
+
     col1, col2 = st.columns([1,4])
 
     # Create a form for hyperparameter range inputs
@@ -136,7 +139,7 @@ def tuning():
         inner_cv = st.session_state.skf
 
         # Initialize the progress bar
-        progress_bar = st.progress(0)
+        progress_bar = col2.progress(0)
         # Record the start time
         start_time = time.time()
 
@@ -195,17 +198,18 @@ def tuning():
 
         progress_bar.empty()
 
+        with col2.spinner('Evaluating best model ...'):
+            st.session_state.best_params = study.best_params
+            st.session_state.model_evaluation_results = evaluate_model(folds, st.session_state.best_params)
+
     with col1:
-        if 'optuna_study' in st.session_state:
-            best_params = st.session_state.optuna_study.best_params
+        if 'optuna_study' in st.session_state and 'model_evaluation_results' in st.session_state:
             st.write("**Best Hyperparameters Found**")
             # Convert the best_params dictionary to a DataFrame for a better display
-            best_params_df = pd.DataFrame(list(best_params.items()), columns=["Hyperparameter", "Value"])
-            st.table(best_params_df)  # Display as a table
+            best_params_df = pd.DataFrame(list(st.session_state.best_params.items()), columns=["Hyperparameter", "Value"])
+            st.dataframe(best_params_df, hide_index=True, use_container_width=True)  # Display as a table
 
-            # Evaluate the model with the best hyperparameters across all outer folds
-            outer_results_best, outer_results_default, all_y_true, all_y_pred_best, all_y_pred_default = evaluate_model(
-                folds, best_params)
+            outer_results_best, outer_results_default, all_y_true, all_y_pred_best, all_y_pred_default = st.session_state.model_evaluation_results
 
             st.write("**Model Performance with Outer CV**")
 
