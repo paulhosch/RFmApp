@@ -1,41 +1,48 @@
+# Standard Library Imports
+# (No standard library imports)
+
+# Related Third-Party Imports
 import streamlit as st
 from streamlit_extras.chart_container import chart_container
 from streamlit_extras.stylable_container import stylable_container
 from streamlit_option_menu import option_menu
 from sklearn.model_selection import StratifiedKFold
 
+# Local Application-Specific Imports
 from backend.obs_group import *
 from backend.sampling import unify_ground_truth, get_stratified_sample, get_group_X_y, get_logo_folds
 from frontend.map import plot_sample_coordinates
 from frontend.chart import plot_kfold_splits
 from static.styles import opt_menu_style, training_container, testing_container
+
 def sampling():
     if are_observation_groups_valid_and_covered():
         pass
     else:
         st.error("Observation groups are not properly defined.", icon="⚠")
+        return
 
     observation_groups = get_all_observation_groups()
 
-    col1, col2 = st.columns([1, 5])
+    col1, col2 = st.columns([1, 4])
 
     with col1:
-        with st.form("sampling_design"):
-            st.write("#### Sampling Design")
-            mode_input_dummy = st.selectbox("**Sampling Mode**", ['Grouped Stratified Random Sampling'])
-            total_size = st.number_input("**Samples per Group**", min_value=100, value=500,
-                                         step=10)
-            allocation = st.selectbox("**Class Allocation**", ["Proportional", "Equalized"])
-            st.write("#### Validation Design")
+        with st.form("sampling_design", border=False):
+            with st.expander("**Sampling Design**", expanded=True):
+                mode_input_dummy = st.selectbox("Sampling Mode", ['Grouped Stratified Random Sampling'])
+                total_size = st.number_input("Samples per Group", min_value=100, value=500,
+                                             step=10)
+                allocation = st.selectbox("Class Allocation", ["Proportional", "Equalized"])
 
-            outer_input_dummy = st.selectbox("**Outer Validation Loop**", ['LOGO-CV'])
+            with st.expander("**Validation Design**", expanded=True):
+                outer_input_dummy = st.selectbox("Outer Validation Loop", ['LOGO-CV'])
 
-            inner_input_dummy = st.selectbox("**Inner Validation Loop**", ['SKF-CV'])
-            k_folds = st.number_input("**K-Folds**", min_value=2, value=5, step=1)
+                inner_input_dummy = st.selectbox("Inner Validation Loop", ['SKF-CV'])
+                k_folds = st.number_input("K-Folds", min_value=2, value=5, step=1)
             submitted = st.form_submit_button("Create Samples", use_container_width=True, type="primary")
 
         if submitted:
-            progress_bar = st.progress(0)
+            progress_bar = col2.progress(0)
             total_groups = len(observation_groups)
             for i, group in enumerate(observation_groups):
                 progress = (i + 1) / total_groups
@@ -45,20 +52,21 @@ def sampling():
                 aoi = group['aoi']
                 ground_truth = unify_ground_truth(group)
 
-                with st.spinner(text=f"Getting sample points from {group['label']}"):
-                    if allocation == "Equalized":
-                        flooded_size = non_flooded_size = total_size // 2
-                    else:  # Proportional
-                        flooded_ratio = ground_truth.geometry.area.iloc[0] / aoi.geometry.area.iloc[0]
-                        flooded_size = int(total_size * flooded_ratio)
-                        non_flooded_size = total_size - flooded_size
+                with col2:
+                    with st.spinner(text=f"Getting sample points from {group['label']}"):
+                        if allocation == "Equalized":
+                            flooded_size = non_flooded_size = total_size // 2
+                        else:  # Proportional
+                            flooded_ratio = ground_truth.geometry.area.iloc[0] / aoi.geometry.area.iloc[0]
+                            flooded_size = int(total_size * flooded_ratio)
+                            non_flooded_size = total_size - flooded_size
 
-                    sample_coordinates = get_stratified_sample(aoi, ground_truth, flooded_size, non_flooded_size)
+                        sample_coordinates = get_stratified_sample(aoi, ground_truth, flooded_size, non_flooded_size)
 
-                with st.spinner(text=f"Compiling features and labels for observation group {group['label']}"):
-                    X, y = get_group_X_y(group, group_hash, sample_coordinates)
+                    with st.spinner(text=f"Compiling features and labels for observation group {group['label']}"):
+                        X, y = get_group_X_y(group, group_hash, sample_coordinates)
 
-                    update_observation_group(i, sample_coordinates=sample_coordinates, X=X, y=y)
+                        update_observation_group(i, sample_coordinates=sample_coordinates, X=X, y=y)
 
 
             progress_bar.empty()

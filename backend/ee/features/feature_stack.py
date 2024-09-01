@@ -1,14 +1,19 @@
+# Standard Library Imports
+# (No standard library imports)
+
+# Third-Party Library Imports
 import ee
-import streamlit as st
+
+# Local/Application-Specific Imports
 from backend.obs_group import *
 
-@st.cache_data()
-def add_feature_image_to_group(_i, _group, group_hash):
-    date = _group.get('date', 'Unknown date')
-    label = _group['label']
-    aoi_ee = _group['aoi_ee']
-    start_date_ee = _group['start_date_ee']
-    end_date_ee = _group['end_date_ee']
+
+def add_feature_image_to_group(i, group, msg_col):
+    date = group.get('date', 'Unknown date')
+    label = group['label']
+    aoi_ee = group['aoi_ee']
+    start_date_ee = group['start_date_ee']
+    end_date_ee = group['end_date_ee']
     all_features = st.session_state.all_features
 
     # Get Sentinel-1 data
@@ -21,7 +26,7 @@ def add_feature_image_to_group(_i, _group, group_hash):
     # Check coverage
     count = s1.size().getInfo()
     if count == 0:
-        st.error(f'No Sentinel-1 imagery available for {label} ({date}).', icon="⚠")
+        msg_col.error(f'No Sentinel-1 imagery available for {label} ({date}).', icon="⚠")
         st.stop()
 
     # Create Sentinel-1 mosaic
@@ -32,9 +37,9 @@ def add_feature_image_to_group(_i, _group, group_hash):
     aoi_contained = mosaic_bbox.contains(aoi_ee).getInfo()
 
     if aoi_contained:
-        st.success(f'Sentinel-1 imagery for {label} ({date}) fully covers the AOI.')
+        msg_col.success(f'Sentinel-1 imagery for {label} ({date}) fully covers the AOI.')
     else:
-        st.warning(f'Sentinel-1 imagery for {label} ({date}) does not fully cover the AOI.', icon="⚠")
+        msg_col.warning(f'Sentinel-1 imagery for {label} ({date}) does not fully cover the AOI.', icon="⚠")
 
     # Get DEM
     dem = ee.Image('MERIT/DEM/v1_0_3').select('dem').clip(aoi_ee).rename('DEM')
@@ -69,7 +74,4 @@ def add_feature_image_to_group(_i, _group, group_hash):
     # Remove 'constant' band if it exists
     feature_image = feature_image.select(all_features).clip(aoi_ee)
 
-    # Update group
-    update_observation_group(_i, feature_image=feature_image)
-
-    return
+    return feature_image

@@ -1,11 +1,13 @@
-# standard library imports
-# related third party imports
+# Standard Library Imports
+# (No standard library imports)
+
+# Related Third-Party Imports
 import ee
 import streamlit as st
 from streamlit_extras.stylable_container import stylable_container
 from streamlit_option_menu import option_menu
 
-# local app specific imports
+# Local Application-Specific Imports
 from backend.obs_group import *
 from backend.ee import add_feature_min_max, compute_pairwise_correlations_for_groups, get_importances
 from frontend.map import plot_feature_maps
@@ -14,9 +16,9 @@ from frontend.chart import (get_histogram_data, create_ridgeline_plot, plot_3d_c
 from static.styles import opt_menu_style, border_container
 
 
+
 def features():
     #### Initialize ####
-    st.write("### Feature Engineering")
     st.empty()  # Clear the UI
 
     if 'logo_folds' not in st.session_state:
@@ -32,8 +34,8 @@ def features():
     col1, col2 = st.columns([1, 4])
 
     #### Plot Maps ####
-    with col1.expander('**Spacial Distribution**'):
-        with st.form('spacial_distribution'):
+    with col1.expander('**Spacial Distribution of Features**'):
+        with st.form('spacial_distribution', border=False):
             features_to_map = st.multiselect('Select Input Features',
                                              st.session_state.all_features,
                                              default=st.session_state.selected_features,
@@ -44,7 +46,6 @@ def features():
                 icons=['map' for _ in observation_group_labels],
                 menu_icon="cast", default_index=0, orientation="vertical", styles=opt_menu_style
             )
-            st.divider()
 
             map_features = st.form_submit_button(label='Plot Maps', use_container_width=True, type='primary')
 
@@ -76,8 +77,8 @@ def features():
                         st.pyplot(figure)
 
     #### Plot Ridgeline Histograms ####
-    with col1.expander('**Value Distribution**'):
-        with st.form('value_distribution'):
+    with col1.expander('**Feature Value Distribution**'):
+        with st.form('value_distribution', border=False):
             features_to_plot = st.multiselect('Select Input Features',
                                               st.session_state.all_features,
                                               default=st.session_state.selected_features,
@@ -86,8 +87,6 @@ def features():
                 None, ['Ridgeline', 'Histogram', 'Boxplot'], icons=['graph-down', 'bar-chart', 'bar-chart-steps'],
                 menu_icon="cast", default_index=0, orientation="vertical", styles=opt_menu_style
             )
-
-            st.divider()
 
             plot_features = st.form_submit_button(label='Plot Values', use_container_width=True, type='primary')
     with col2:
@@ -105,8 +104,8 @@ def features():
                     st.plotly_chart(st.session_state.ridgeline_fig)
 
     #### Plot Correlation  ####
-    with col1.expander('**Correlation Analysis**'):
-        with st.form('correlation'):
+    with col1.expander('**Feature Correlation Analysis**'):
+        with st.form('correlation', border=False):
             st.write("##### Global Correlation Analysis")
             features_to_analyse = st.multiselect('Select Input Features',
                                                  st.session_state.all_features,
@@ -117,7 +116,6 @@ def features():
                 None, ['Pearson', 'Spearman', 'Difference'], icons=['graph-up', 'list-ol', 'info'],
                 menu_icon="cast", default_index=0, orientation="vertical", styles=opt_menu_style
             )
-            st.divider()
 
             analyse_features = st.form_submit_button(label='Plot Correlation', use_container_width=True, type='primary')
     with col2:
@@ -149,8 +147,8 @@ def features():
                 st.plotly_chart(st.session_state.correlation_fig)
 
     #### Importance  ####
-    with col1.expander('**Importance Analysis**'):
-        with st.form('importance_form'):
+    with col1.expander('**Feature Importance Analysis**'):
+        with st.form('importance_form', border=False):
             features = st.multiselect('Select Input Features',
                                       st.session_state.all_features,
                                       default=st.session_state.selected_features,

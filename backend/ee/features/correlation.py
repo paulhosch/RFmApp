@@ -1,5 +1,11 @@
+# Standard Library Imports
+
+# Third-Party Library Imports
 import ee
 import numpy as np
+
+# Local/Application-Specific Imports
+
 
 def compute_pairwise_correlations_for_groups(groups, features, reducer):
     """

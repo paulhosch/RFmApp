@@ -53,7 +53,7 @@ def cartoee_default_map_customization(fig, ax, bounds):
         ax, length=metric_distance, xy=(0.15, 0.05), fontsize=10, color="black", unit="km")
 
     # Add north arrow
-    cartoee.add_north_arrow(ax, xy=(0.9, 0.2), text='', arrow_color="black", arrow_length=0.1)
+    #cartoee.add_north_arrow(ax, xy=(0.9, 0.2), text='', arrow_color="black", arrow_length=0.1)
 
     # Make Background transparent
     fig.patch.set_facecolor('none')  # Set figure background to transparent

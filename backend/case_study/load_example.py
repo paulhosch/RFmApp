@@ -1,9 +1,12 @@
+# Standard Library Imports
 import os
 from datetime import datetime
 
+# Third-Party Library Imports
 import geopandas as gpd
 import streamlit as st
 
+# Local/Application-Specific Imports
 from backend.case_study import NUM_SETS, EXAMPLE_FOLDERS
 from backend.obs_group import initialize_observation_groups, update_observation_group
 

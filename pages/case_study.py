@@ -64,13 +64,11 @@ def handle_hydrography_upload(uploaded_files, tmpdir):
 def case_study():
     initialize_observation_groups(NUM_SETS)
 
-    col1, col2, col3, = st.columns([1, 3, 2])
+    col1, col2, col3 = st.columns([4, 11, 5])
 
     with col1:
-        st.write("#### Define Multiple Observations Groups")
-        st.write("Upload AOI and Ground Truth Shapefiles and Specify Observation Date!")
         for i in range(NUM_SETS):
-            with st.expander(f"**Observation Group-{i+1}**"):
+            with st.expander(f"**Define Case Study {i+1}**"):
                 st.write("**Area of Interest**")
                 aoi_files = st.file_uploader(
                     f'AOI Set {i+1}',
@@ -158,7 +156,7 @@ def case_study():
 
         if valid_groups:
             try:
-                with hc.HyLoader('', hc.Loaders.pretty_loaders, index=3):
+                with st.spinner('Plotting AOI and Ground Truth Maps'):
                     figures = plot_all_aois(valid_groups)
                 cols = st.columns(2)
 
@@ -173,11 +171,14 @@ def case_study():
 
                 # Display marker map in col3
                 with col3:
+                    st.image(os.path.join('static', 'images', 'North_Pointer.svg'), width=75)
+
                     if len(figures) > 0:
                         fig, title = figures[-1]
                         st.pyplot(fig)
                         st.write(title)
                         plt.close(fig)
+
                     else:
                         st.write("No marker map available.")
             except ValueError as e:
@@ -186,17 +187,22 @@ def case_study():
         else:
             st.write("No valid data available for visualization. Please upload or initialize data.")
 
-
     if are_observation_groups_valid():
-
         convert_observation_groups_to_ee()
 
         progress_bar = st.progress(0)
-        for i, group in enumerate(observation_groups):
-            progress = int((i + 1) / len(observation_groups)*100)
+        for i, group in enumerate(st.session_state.observation_groups):
+            progress = int((i + 1) / len(st.session_state.observation_groups) * 100)
             progress_bar.progress(progress, text=f"Processing {group['label']} ({group['date']})")
 
-            group_hash = hash_single_observation_group(group)
-            add_feature_image_to_group(i, group, group_hash)
+            current_group_hash = hash_single_observation_group(group)
+
+            # Check if the group hash has changed or if the feature image doesn't exist
+            if 'group_hash' not in group or group['group_hash'] != current_group_hash or 'feature_image' not in group:
+                feature_image = add_feature_image_to_group(i, group, col1)
+
+                # Update group with new feature image and hash
+                update_observation_group(i, feature_image=feature_image, group_hash=current_group_hash)
+
 
         progress_bar.empty()

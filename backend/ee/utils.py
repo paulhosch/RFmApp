@@ -1,10 +1,12 @@
+# Standard Library Imports
 from datetime import timedelta
 
-import geopandas as gpd
+# Third-Party Library Imports
 import ee
-import streamlit as st
 
+# Local/Application-Specific Imports
 from backend.obs_group import *
+
 
 
 def convert_observation_groups_to_ee():

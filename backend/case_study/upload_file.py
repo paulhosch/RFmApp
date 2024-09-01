@@ -1,9 +1,14 @@
+# Standard Library Imports
 import os
-import streamlit as st
 from tempfile import TemporaryDirectory
-import geopandas as gpd
 
+# Third-Party Library Imports
+import geopandas as gpd
+import streamlit as st
+
+# Local/Application-Specific Imports
 from backend.obs_group import update_observation_group
+
 
 def handle_file_upload(uploaded_files, key, group_index):
     if uploaded_files is not None and len(uploaded_files) > 0:

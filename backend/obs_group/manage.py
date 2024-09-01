@@ -1,8 +1,15 @@
+# Standard Library Imports
 import hashlib
 import json
+from datetime import date
+
+# Third-Party Library Imports
 import streamlit as st
 import geopandas as gpd
-from datetime import date
+
+# Local/Application-Specific Imports
+# (No local/application-specific imports)
+
 
 
 def initialize_observation_groups(num_sets):

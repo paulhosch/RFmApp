@@ -1,9 +1,17 @@
+# Standard Library Imports
+# (No standard library imports)
+
+# Third-Party Library Imports
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.inspection import permutation_importance
 import shap
 import streamlit as st
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.inspection import permutation_importance
+
+# Local/Application-Specific Imports
+# (No local/application-specific imports)
+
 
 def add_random_col(X, use_high_card_col, use_low_card_col):
     X_random = X.copy()

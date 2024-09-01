@@ -43,6 +43,9 @@ menu_data = [
     {'icon': "fas fa-braille fa-icon", 'label': "Sampling"},
     {'icon': "fas fa-layer-group fa-icon", 'label': "Features"},
     {'icon': "fas fa-sliders-h fa-icon", 'label': "Tuning"},
+    {'icon': "fas fa-tachometer-alt fa-icon", 'label': "Evaluation"},
+    {'icon': "fas fa-database fa-icon", 'label': "Database"},
+
 ]
 
 # Create the Hydralit navbar
@@ -66,6 +69,9 @@ elif menu_id == "Sampling":
     pages.sampling()
 elif menu_id == "Tuning":
     pages.tuning()
-
+elif menu_id == "Evaluation":
+    pages.evaluation()
+elif menu_id == "Database":
+    pages.database()
 # You can add the logo to your pages separately, for example:
 # st.sidebar.image(str(logo_path), use_column_width=True)

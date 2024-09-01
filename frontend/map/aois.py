@@ -47,8 +47,7 @@ def plot_all_aois(aoi_ground_truth_pairs):
         metric_distance = (lon_range * 111) / 5
         metric_distance = max(1, round(metric_distance))
 
-        cartoee.add_north_arrow(ax, xy=(0.9, 0.15), text_color="black", arrow_color="black", fontsize=20,
-                                arrow_length=0.1)
+
         cartoee.add_scale_bar_lite(ax, length=metric_distance, xy=(0.15, 0.05), fontsize=12, color="black", unit="km")
 
         plt.tight_layout()
@@ -99,7 +98,7 @@ def plot_all_aois(aoi_ground_truth_pairs):
 
     # Define inset position and size (adjust these values to move the inset)
     inset_left = 0.475  # Distance from left edge of figure (0 to 1)
-    inset_bottom = 0.625  # Distance from bottom edge of figure (0 to 1)
+    inset_bottom = 0.626  # Distance from bottom edge of figure (0 to 1)
     inset_width = 0.3  # Width of inset (0 to 1)
     inset_height = 0.3  # Height of inset (0 to 1)
 
@@ -115,7 +114,7 @@ def plot_all_aois(aoi_ground_truth_pairs):
     ax_inset.add_feature(cfeature.LAND, facecolor='#c9d2d3')
 
     # Plot a point on the inset map to show the center of the main map
-    ax_inset.plot(center_lon, center_lat, 'ro', markersize=6, transform=ccrs.Geodetic(), color=color)
+    ax_inset.plot(center_lon, center_lat, marker='*', markersize=8, transform=ccrs.Geodetic(), mec= '#01549f', mfc='#01549f')
 
     # Add a circular boundary to the Orthographic projection
     theta = np.linspace(0, 2 * np.pi, 100)
